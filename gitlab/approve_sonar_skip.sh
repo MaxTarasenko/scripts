@@ -8,6 +8,7 @@ approvals=$(curl -s --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
 for user in "${USERS_TO_CHECK[@]}"; do
   for approved_user in ${approvals}; do
     if [[ "${approved_user}" == "${user}" ]]; then
+      echo "User ${approved_user} approved the merge request who can skip Sonar."
       export SONAR_ABORT_PIPE="false"
       break
     fi
