@@ -10,6 +10,8 @@ for user in "${USERS_TO_CHECK[@]}"; do
     if [[ "${approved_user}" == "${user}" ]]; then
       echo "User ${approved_user} approved the merge request who can skip Sonar."
       check_user="true"
+    else
+      check_user="false"
     fi
   done
 done
@@ -24,9 +26,10 @@ if jq -e '.[] | select(. == "SKIP_SONAR_CHECK")' >/dev/null <<<"$labels"; then
   check_label="true"
 else
   echo "The merge request does not have the SKIP_SONAR_CHECK label"
+  check_label="false"
 fi
 
-if [ -n "${check_user}" ] && [ -n "${check_label}" ]; then
+if [ "${check_user}" == "true" ] && [ "${check_label}" = "true" ]; then
   echo "Sonar skip check approved"
   export SONAR_ABORT_PIPE="false"
 else
