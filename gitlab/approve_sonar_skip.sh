@@ -5,13 +5,12 @@ approvals=$(curl -s --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
   "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/approvals" | jq -r '.approved_by[].user.username')
 
 # Check if there are users from the array USERS_TO_CHECK among the users who voted
+check_user="false"
 for user in "${USERS_TO_CHECK[@]}"; do
   for approved_user in ${approvals}; do
     if [[ "${approved_user}" == "${user}" ]]; then
       echo "User ${approved_user} approved the merge request who can skip Sonar."
       check_user="true"
-    else
-      check_user="false"
     fi
   done
 done
