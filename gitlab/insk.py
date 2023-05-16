@@ -52,19 +52,22 @@ def approval():
 
 # Check Sonar skip
 def sonar_skip():
+    # Revers change skip sonar
+    if source_branch in ("master", "main", "cicd-change") and target_branch == "dev":
+        print("export SONAR_ABORT_PIPE=false")
+        return
     # Check users
     for user in approved_users:
         if user in list_users_to_check:
             if "SKIP_SONAR_CHECK" in labels:
-                if source_branch == "master" and target_branch == "dev":
-                    print("export SONAR_ABORT_PIPE=true")
-                    break
-                else:
-                    print("export SONAR_ABORT_PIPE=false")
-                    break
+                print("export SONAR_ABORT_PIPE=false")
+                break
             else:
                 print("export SONAR_ABORT_PIPE=true")
                 break
+        else:
+            print("export SONAR_ABORT_PIPE=true")
+            break
 
 
 # Get the passed command line arguments
