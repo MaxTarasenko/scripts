@@ -1,9 +1,17 @@
-# Variables
+# Install packages
+import subprocess
+import sys
 import os
+
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
+install('python-gitlab')
+
 # Gitlab api
 import gitlab
-# Arguments
-import sys
 
 # Gitlab Access
 url = os.environ.get('CI_API_V4_URL')
