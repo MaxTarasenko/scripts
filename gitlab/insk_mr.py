@@ -53,7 +53,7 @@ def approval():
 # Check Sonar skip
 def sonar_skip():
     # Revers change skip sonar
-    if source_branch in ("master", "main", "cicd-change") and target_branch == "dev":
+    if source_branch in ("master", "main", "cicd-changes") and target_branch == "dev":
         print("export SONAR_ABORT_PIPE=false")
         return
     # Check users
