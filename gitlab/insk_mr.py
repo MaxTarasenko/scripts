@@ -7,6 +7,7 @@ import gitlab
 # Gitlab Access
 url = os.environ.get('CI_API_V4_URL')
 token = os.environ.get('GITLAB_TOKEN')
+print(url, token)
 gl = gitlab.Gitlab(url, private_token=token)
 # Project info
 project_id = os.environ.get('CI_PROJECT_ID')
@@ -28,8 +29,6 @@ labels = merge_request.labels
 # Targets
 source_branch = merge_request.source_branch
 target_branch = merge_request.target_branch
-
-print(url, token, project_id, merge_request_iid)
 
 
 # Check approval
