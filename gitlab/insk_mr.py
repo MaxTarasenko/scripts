@@ -8,6 +8,7 @@ import gitlab
 url = os.environ.get('CI_API_V4_URL')
 token = os.environ.get('GITLAB_TOKEN')
 print(url, token)
+
 gl = gitlab.Gitlab(url, private_token=token)
 # Project info
 project_id = os.environ.get('CI_PROJECT_ID')
