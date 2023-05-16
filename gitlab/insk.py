@@ -25,6 +25,9 @@ for obj in approvals.approved_by:
     approved_users.append(obj["user"]["username"])
 # Set array labels
 labels = merge_request.labels
+# Targets
+source_branch = merge_request.source_branch
+target_branch = merge_request.target_branch
 
 
 # Check approval
@@ -53,8 +56,12 @@ def sonar_skip():
     for user in approved_users:
         if user in list_users_to_check:
             if "SKIP_SONAR_CHECK" in labels:
-                print("export SONAR_ABORT_PIPE=false")
-                break
+                if source_branch == "master" and target_branch == "dev":
+                    print("export SONAR_ABORT_PIPE=true")
+                    break
+                else:
+                    print("export SONAR_ABORT_PIPE=false")
+                    break
             else:
                 print("export SONAR_ABORT_PIPE=true")
                 break
@@ -73,3 +80,4 @@ if len(args) > 0:
         print("Invalid function")
 else:
     print("You must specify a function to run")
+    print("approval | sonar_skip")
