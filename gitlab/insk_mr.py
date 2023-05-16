@@ -29,6 +29,8 @@ labels = merge_request.labels
 source_branch = merge_request.source_branch
 target_branch = merge_request.target_branch
 
+print(url, token, project_id, merge_request_iid)
+
 
 # Check approval
 def approval():
