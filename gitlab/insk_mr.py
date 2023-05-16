@@ -61,13 +61,13 @@ def sonar_skip():
         if user in list_users_to_check:
             if "SKIP_SONAR_CHECK" in labels:
                 print("export SONAR_ABORT_PIPE=false")
-                break
+                return
             else:
                 print("export SONAR_ABORT_PIPE=true")
-                break
+                return
         else:
             print("export SONAR_ABORT_PIPE=true")
-            break
+            return
 
 
 # Get the passed command line arguments
