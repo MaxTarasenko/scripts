@@ -1,15 +1,6 @@
-# Install packages
-import subprocess
+# systems
 import sys
 import os
-
-
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-
-install('python-gitlab')
-
 # Gitlab api
 import gitlab
 
