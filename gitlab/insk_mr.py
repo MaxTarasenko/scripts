@@ -5,7 +5,7 @@ import os
 import gitlab
 
 # Gitlab Access
-url = os.environ.get('CI_API_V4_URL')
+url = os.environ.get('CI_SERVER_URL')
 token = os.environ.get('GITLAB_TOKEN')
 gl = gitlab.Gitlab(url, private_token=token)
 # Project info
