@@ -5,8 +5,9 @@ import os
 import gitlab
 
 # Gitlab Access
-url = os.environ.get('CI_SERVER_URL')
+url = os.environ.get('CI_API_V4_URL')
 token = os.environ.get('GITLAB_TOKEN')
+print(url, token)
 gl = gitlab.Gitlab(url, private_token=token)
 # Project info
 project_id = os.environ.get('CI_PROJECT_ID')
@@ -46,14 +47,16 @@ def approval():
                     exit(1)
             else:
                 print("Approved")
+                exit(0)
     else:
         print('MR needs to be approved')
+        exit(1)
 
 
 # Check Sonar skip
 def sonar_skip():
     # Revers change skip sonar
-    if source_branch in ("master", "main", "cicd-changes") and target_branch == "dev":
+    if source_branch in ("master", "main", "cicd-change") and target_branch == "dev":
         print("export SONAR_ABORT_PIPE=false")
         return
     # Check users
