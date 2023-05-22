@@ -59,13 +59,15 @@ if [[ "$chart_status" == "failed" ]]; then
   echo "Chart status is FAILED, initiating rollback"
 
   # Get the logs of the fallen container
-  k8sPodName=$(kubectl get pods \
+  k8sPodName=$(kubectl -n "${NAMESPACE}" get pods \
     -o jsonpath="{range .items[*]}{.metadata.name}{' '}{.status.phase}{' '}{.spec.containers[*].image}{'\n'}{end}" | \
     grep "${ECR}/${IMAGE_PREFIX}/${IMAGE_NAME}:${IMAGE_TAG}" | \
     column -t -s " " | \
     awk '{print $1}')
-
-  kubectl logs --since=15m "${k8sPodName}" > container.log
+  # Write logs to file
+  kubectl -n "${NAMESPACE}" logs --since=15m "${k8sPodName}" > container.log
+  # Write describe pod to file
+  kubectl -n "${NAMESPACE}" describe pods "${k8sPodName}" > describe_container.log
 
   # Initiating rollback
   helm rollback -n "${NAMESPACE}" "${HELM_CHART_NAME}" --wait --timeout 120s
