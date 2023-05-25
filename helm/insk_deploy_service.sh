@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Change permission to KUBECONFIG file
+chmod 600 "${KUBECONFIG}"
+
 # Authorization to AWS ECR
 aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | helm registry login --username AWS --password-stdin "${ECR}"
 if [ $? -ne 0 ]; then
