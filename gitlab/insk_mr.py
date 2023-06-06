@@ -34,19 +34,21 @@ target_branch = merge_request.target_branch
 def approval():
     # Author MR
     print(f'MR Author: {mr_author}')
+
     # Check approval
     if approvals.approved:
-        for user in approved_users:
-            if user == mr_author:
-                if user in list_users_to_check:
-                    print(f"{user} is in the list of users who can skip own mr")
-                    exit(0)
-                else:
-                    print("You cannot approve your own merge request")
-                    exit(1)
-            else:
-                print("Approved")
-                exit(0)
+        if mr_author in approved_users and mr_author in list_users_to_check:
+            print(f"{mr_author} is in the list of users who can skip own mr")
+            exit(0)
+        elif any(user for user in approved_users if user != mr_author):
+            print("Approved by another user, skipping check")
+            exit(0)
+        elif mr_author in approved_users:
+            print("You cannot approve your own merge request")
+            exit(1)
+        else:
+            print("MR needs to be approved by a valid user")
+            exit(1)
     else:
         print('MR needs to be approved')
         exit(1)
@@ -58,6 +60,12 @@ def sonar_skip():
     if source_branch in ("master", "main", "cicd-change") and target_branch == "dev":
         print("export SONAR_ABORT_PIPE=false")
         return
+
+    # If approved_users is empty, we set SONAR_ABORT_PIPE to true
+    if not approved_users:
+        print("export SONAR_ABORT_PIPE=true")
+        return
+
     # Check users
     for user in approved_users:
         if user in list_users_to_check:
@@ -67,9 +75,6 @@ def sonar_skip():
             else:
                 print("export SONAR_ABORT_PIPE=true")
                 return
-        else:
-            print("export SONAR_ABORT_PIPE=true")
-            return
 
 
 # Get the passed command line arguments
