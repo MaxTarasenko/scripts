@@ -75,6 +75,9 @@ def sonar_skip():
             else:
                 print("export SONAR_ABORT_PIPE=true")
                 return
+        else:
+            print("export SONAR_ABORT_PIPE=true")
+            return
 
 
 # Get the passed command line arguments
