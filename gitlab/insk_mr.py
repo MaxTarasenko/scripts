@@ -35,6 +35,11 @@ def approval():
     # Author MR
     print(f'MR Author: {mr_author}')
 
+    # Revers change
+    if source_branch in ("master", "main", "cicd-change") and target_branch == "dev":
+        print("Approved revers change")
+        exit(0)
+
     # Check approval
     if approvals.approved:
         if mr_author in approved_users and mr_author in list_users_to_check:
