@@ -66,6 +66,11 @@ def sonar_skip():
         print("export SONAR_ABORT_PIPE=false")
         return
 
+    # dev to master/main
+    if source_branch == "dev" and target_branch in ("master", "main"):
+        print("export SONAR_ABORT_PIPE=false")
+        return
+
     # If approved_users is empty, we set SONAR_ABORT_PIPE to true
     if not approved_users:
         print("export SONAR_ABORT_PIPE=true")
