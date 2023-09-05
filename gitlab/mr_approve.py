@@ -54,4 +54,4 @@ def approval():
         exit(1)
 
 
-approvals()
+approval()
