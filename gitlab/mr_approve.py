@@ -37,10 +37,7 @@ def approval():
 
     # Check approval
     if approvals.approved:
-        if mr_author in approved_users:
-            print(f"{mr_author} is in the list of users who can skip own mr")
-            exit(0)
-        elif any(user for user in approved_users if user != mr_author):
+        if any(user for user in approved_users if user != mr_author):
             print("Approved by another user, skipping check")
             exit(0)
         elif mr_author in approved_users:
